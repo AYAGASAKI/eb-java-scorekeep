@@ -1,0 +1,33 @@
+version: 2
+jobs:
+  deploy:
+    working_directory: ~/deployment-archive
+    docker:
+      - image: naughtldy/circleci-node-awscli:8
+    steps:
+      - checkout
+      - run:
+          name: zip
+          command: "zip -r master ../deployment-archive"
+      - run:
+          name: zip upload
+          command: aws s3 cp master.zip s3://circleci-cctest1/codedeploy --region ap-northeast-1
+      - run:
+          name: Deploy Staging
+          command: |
+            aws deploy create-deployment \
+              --application-name test1 \
+              --deployment-group-name prod \
+              --s3-location bucket="circleci-cctest1",bundleType="zip",eTag=`aws s3api head-object --bucket circleci-cctest1 --key codedeploy | jq .ETag`,key="codedeploy" \
+              --region ap-northeast-1
+
+workflows:
+  version: 2
+  deploy:
+    jobs:
+      - deploy:
+          filters:
+            branches:
+              only: codedeploy
+              
+              
