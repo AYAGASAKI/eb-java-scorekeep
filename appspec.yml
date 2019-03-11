@@ -1,0 +1,19 @@
+version: 1.0
+os: linux
+
+files: 
+  - source: /
+    destination: /home/ec2-user
+hooks:
+  BeforeInstall:
+    - location: Scripts/BeforeInstall.sh
+  AfterInstall:
+    - location: Scripts/AfterInstall.sh
+      timeout: 60
+  ApplicationStart:
+    - location: Scripts/ApplicationStart.sh
+      timeout: 60
+  ValidateService:
+    - location: Scripts/ValidateService.sh
+      timeout: 60
+      
