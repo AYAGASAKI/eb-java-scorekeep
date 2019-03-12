@@ -2,10 +2,13 @@ version: 2
 jobs:
   deploy:
     working_directory: ~/deployment-archive
-    docker:
+    docker:  
       - image: circleci/openjdk:8-jdk
     steps:
       - checkout
+      - run:
+          name: python
+          command: sudo apt-get install python-pip
       - run:
           name: awscli
           command: pip install --upgrade awscli
