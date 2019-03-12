@@ -3,9 +3,12 @@ jobs:
   deploy:
     working_directory: ~/deployment-archive
     docker:
-      - image: naughtldy/circleci-node-awscli:8
+      - image: circleci/openjdk:8-jdk
     steps:
       - checkout
+      - run:
+          name: awscli
+          command: pip install --upgrade awscli
       - run:
           name: build
           command: mvn clean compile test
