@@ -7,6 +7,12 @@ jobs:
     steps:
       - checkout
       - run:
+          name: build
+          command: mvn clean compile test
+      - run:
+          name: packaging
+          command: mvn package
+      - run:
           name: zip
           command: "zip -r master ../deployment-archive"
       - run:
@@ -15,8 +21,7 @@ jobs:
       - run:
           name: Deploy Staging
           command: |
-            aws --region ap-southeast-2 \
-                deploy create-deployment \
+            aws deploy create-deployment \
               --application-name test1 \
               --deployment-group-name prod \
               --s3-location bucket="circleci-cctest1",bundleType="zip",eTag=`aws s3api head-object --bucket circleci-cctest1 --key codedeploy | jq .ETag`,key="codedeploy" \
