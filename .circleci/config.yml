@@ -7,6 +7,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: gradle
+          command: sudo apt-get install gradle
+      - run:
           name: python
           command: sudo apt-get install python-pip
       - run:
@@ -14,10 +17,7 @@ jobs:
           command: pip install --upgrade awscli
       - run:
           name: build
-          command: mvn clean compile test
-      - run:
-          name: packaging
-          command: mvn package
+          command: /usr/bin/gradle build
       - run:
           name: zip
           command: "zip -r master ../deployment-archive"
