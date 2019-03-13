@@ -7,14 +7,14 @@ jobs:
     steps:
       - checkout
       - run:
-          name: gradle
+          name: install gradle
           command: sudo apt-get install gradle
       - run:
-          name: python
+          name: install python
           command: sudo apt-get install python-pip
       - run:
-          name: awscli
-          command: pip install --upgrade awscli
+          name: install awscli
+          command: sudo pip install --upgrade awscli
       - run:
           name: build
           command: /usr/bin/gradle build
